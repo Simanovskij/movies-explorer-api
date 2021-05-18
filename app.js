@@ -5,9 +5,11 @@ const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
+const cors = require('cors');
 const router = require('./routes/index');
 const limiter = require('./utils/rateLimit');
 const LOCAL_DB = require('./utils/config');
+
 
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -21,6 +23,7 @@ mongoose.connect(MONGO_DB, {
   useFindAndModify: false,
 });
 app.use(requestLogger);
+app.use(cors({ credentials: true, origin: '*' }));
 app.use(limiter);
 app.use(helmet());
 app.use(bodyParser.json());

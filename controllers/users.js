@@ -50,8 +50,8 @@ const login = (req, res, next) => {
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
-          sameSite: 'none',
-          secure: true,
+          sameSite: 'None',
+          //secure: true,
         })
         .send({ message: 'Авторизация успешна' });
     })
@@ -61,8 +61,8 @@ const login = (req, res, next) => {
 const signout = (req, res) => {
   res.clearCookie('jwt', {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none',
+    //secure: true,
+    sameSite: 'None',
   }).send({ message: 'Успешный выход' });
 };
 
@@ -95,8 +95,8 @@ const updateUserProfile = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new ValidationError('Переданы некорректные данные'));
-      } else if (err.name === 'CastError') {
-        next(new CastError('id пользователя указан неверно'));
+      } else if (err.code === 11000) {
+        next(new MongoError('Такой email уже зарегистрирован'));
       }
     });
 };
