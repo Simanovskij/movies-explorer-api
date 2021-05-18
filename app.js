@@ -20,11 +20,11 @@ mongoose.connect(MONGO_DB, {
   useCreateIndex: true,
   useFindAndModify: false,
 });
+app.use(requestLogger);
 app.use(limiter);
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(requestLogger);
 app.use(router);
 app.use(errorLogger);
 app.use(errors());
