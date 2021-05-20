@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 const ValidationError = require('../errors/validation-err');
-const MongoError = require('../errors/mongo-err');
+const ConflictError = require('../errors/conflict-err');
 const NotFoundError = require('../errors/not-found-err');
 const CastError = require('../errors/cast-err');
 
@@ -31,7 +31,7 @@ const createUser = (req, res, next) => {
         if (err.name === 'ValidationError') {
           next(new ValidationError('Переданы некорректные данные'));
         } else if (err.name === 'MongoError' && err.code === 11000) {
-          next(new MongoError('Такой email уже зарегистрирован'));
+          next(new ConflictError('Такой email уже зарегистрирован'));
         }
       });
   });
@@ -96,7 +96,7 @@ const updateUserProfile = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new ValidationError('Переданы некорректные данные'));
       } else if (err.code === 11000) {
-        next(new MongoError('Такой email уже зарегистрирован'));
+        next(new ConflictError('Такой email уже зарегистрирован'));
       }
     });
 };

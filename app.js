@@ -10,7 +10,6 @@ const router = require('./routes/index');
 const limiter = require('./utils/rateLimit');
 const LOCAL_DB = require('./utils/config');
 
-
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
