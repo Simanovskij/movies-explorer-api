@@ -3,10 +3,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
-const ValidationError = require('../errors/validation-err');
 const ConflictError = require('../errors/conflict-err');
 const NotFoundError = require('../errors/not-found-err');
-const CastError = require('../errors/cast-err');
+const BadRequestError = require('../errors/badrequest-err');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -29,7 +28,7 @@ const createUser = (req, res, next) => {
       })
       .catch((err) => {
         if (err.name === 'ValidationError') {
-          next(new ValidationError('Переданы некорректные данные'));
+          next(new BadRequestError('Переданы некорректные данные'));
         } else if (err.name === 'MongoError' && err.code === 11000) {
           next(new ConflictError('Такой email уже зарегистрирован'));
         }
@@ -76,7 +75,7 @@ const getCurrentUser = (req, res, next) => {
       if (err.message === 'NotFound') {
         next(new NotFoundError('Пользователь с таким id не найден'));
       } else if (err.name === 'CastError') {
-        next(new CastError('id пользователя указан неверно'));
+        next(new BadRequestError('id пользователя указан неверно'));
       }
       next(err);
     });
@@ -94,7 +93,7 @@ const updateUserProfile = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные'));
+        next(new BadRequestError('Переданы некорректные данные'));
       } else if (err.code === 11000) {
         next(new ConflictError('Такой email уже зарегистрирован'));
       }

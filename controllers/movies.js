@@ -1,8 +1,7 @@
 const Movie = require('../models/movie');
 const NotFoundError = require('../errors/not-found-err');
-const CastError = require('../errors/cast-err');
+const BadRequestError = require('../errors/badrequest-err');
 const ForbiddenError = require('../errors/forbidden-err');
-const ValidationError = require('../errors/validation-err');
 
 const getMovies = (req, res, next) => {
   Movie.find({})
@@ -42,7 +41,7 @@ const createMovie = (req, res, next) => {
     .then((movie) => res.send({ movie }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы невалидные данные'));
+        next(new BadRequestError('Переданы невалидные данные'));
       }
       next(err);
     });
@@ -62,7 +61,7 @@ const deleteMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new CastError('id фильма указан неверно'));
+        next(new BadRequestError('id фильма указан неверно'));
       }
       next(err);
     });
