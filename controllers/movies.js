@@ -42,6 +42,7 @@ const createMovie = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы невалидные данные'));
+        return;
       }
       next(err);
     });
@@ -49,7 +50,8 @@ const createMovie = (req, res, next) => {
 
 const deleteMovie = (req, res, next) => {
   const owner = req.user._id;
-  Movie.findById(req.params.movieId).select('+owner')
+  Movie.findById(req.params.movieId)
+    .select('+owner')
     .orFail(new NotFoundError('Фильм с таким id не найден'))
     .then((movie) => {
       if (movie.owner.equals(owner)) {
