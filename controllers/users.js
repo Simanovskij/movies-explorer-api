@@ -11,10 +11,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then((hash) => {
-    const {
-      name,
-      email,
-    } = req.body;
+    const { name, email } = req.body;
     User.create({
       name,
       email,
@@ -31,6 +28,8 @@ const createUser = (req, res, next) => {
           next(new BadRequestError('Переданы некорректные данные'));
         } else if (err.name === 'MongoError' && err.code === 11000) {
           next(new ConflictError('Такой email уже зарегистрирован'));
+        } else {
+          next(err);
         }
       });
   });
@@ -40,11 +39,13 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id },
+      const token = jwt.sign(
+        { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         {
           expiresIn: '7d',
-        });
+        }
+      );
       res
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,
@@ -58,11 +59,13 @@ const login = (req, res, next) => {
 };
 
 const signout = (req, res) => {
-  res.clearCookie('jwt', {
-    httpOnly: true,
-    //secure: true,
-    sameSite: 'None',
-  }).send({ message: 'Успешный выход' });
+  res
+    .clearCookie('jwt', {
+      httpOnly: true,
+      //secure: true,
+      sameSite: 'None',
+    })
+    .send({ message: 'Успешный выход' });
 };
 
 const getCurrentUser = (req, res, next) => {
@@ -76,8 +79,9 @@ const getCurrentUser = (req, res, next) => {
         next(new NotFoundError('Пользователь с таким id не найден'));
       } else if (err.name === 'CastError') {
         next(new BadRequestError('id пользователя указан неверно'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -86,7 +90,7 @@ const updateUserProfile = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     { name, email },
-    { runValidators: true, new: true },
+    { runValidators: true, new: true }
   )
     .then((newUser) => {
       res.send(newUser);
@@ -96,6 +100,8 @@ const updateUserProfile = (req, res, next) => {
         next(new BadRequestError('Переданы некорректные данные'));
       } else if (err.code === 11000) {
         next(new ConflictError('Такой email уже зарегистрирован'));
+      } else {
+        next(err);
       }
     });
 };
