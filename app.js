@@ -22,7 +22,7 @@ mongoose.connect(MONGO_DB, {
   useFindAndModify: false,
 });
 app.use(requestLogger);
-app.use(cors({ credentials: true, origin: false }));
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(limiter);
 app.use(helmet());
 app.use(bodyParser.json());
