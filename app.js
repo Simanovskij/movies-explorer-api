@@ -14,7 +14,7 @@ const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
-const { PORT = 3000, MONGO_DB = LOCAL_DB } = process.env;
+const { PORT = 3001, MONGO_DB = LOCAL_DB } = process.env;
 
 mongoose.connect(MONGO_DB, {
   useNewUrlParser: true,
