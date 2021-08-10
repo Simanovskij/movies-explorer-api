@@ -35,7 +35,6 @@ const createUser = (req, res, next) => {
           .send({
             name: user.name,
             email: user.email,
-            message: 'Авторизация успешна',
           });
       })
       .catch((err) => {
