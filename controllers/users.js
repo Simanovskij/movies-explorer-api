@@ -30,6 +30,7 @@ const createUser = (req, res, next) => {
             maxAge: 3600000 * 24 * 7,
             httpOnly: true,
             sameSite: 'none',
+            secure: true,
           })
           .send({
             name: user.name,
@@ -64,6 +65,7 @@ const login = (req, res, next) => {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
           sameSite: 'none',
+          secure: true,
         })
         .send({ message: 'Авторизация успешна' });
     })
@@ -75,6 +77,7 @@ const signout = (req, res) => {
     .clearCookie('jwt', {
       httpOnly: true,
       sameSite: 'none',
+      secure: true,
     })
     .send({ message: 'Успешный выход' });
 };
