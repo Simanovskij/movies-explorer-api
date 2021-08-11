@@ -29,8 +29,6 @@ const createUser = (req, res, next) => {
           .cookie('jwt', token, {
             maxAge: 3600000 * 24 * 7,
             httpOnly: true,
-            sameSite: 'None',
-            //secure: true,
           })
           .send({
             name: user.name,
@@ -58,14 +56,12 @@ const login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         {
           expiresIn: '7d',
-        }
+        },
       );
       res
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
-          sameSite: 'None',
-          //secure: true,
         })
         .send({ message: 'Авторизация успешна' });
     })
@@ -76,8 +72,6 @@ const signout = (req, res) => {
   res
     .clearCookie('jwt', {
       httpOnly: true,
-      //secure: true,
-      sameSite: 'None',
     })
     .send({ message: 'Успешный выход' });
 };
