@@ -18,24 +18,10 @@ const createUser = (req, res, next) => {
       password: hash,
     })
       .then((user) => {
-        const token = jwt.sign(
-          { _id: user._id },
-          NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
-          {
-            expiresIn: '7d',
-          },
-        );
-        res
-          .cookie('jwt', token, {
-            maxAge: 3600000 * 24 * 7,
-            httpOnly: true,
-            sameSite: 'none',
-            secure: true,
-          })
-          .send({
-            name: user.name,
-            email: user.email,
-          });
+        res.send({
+          name: user.name,
+          email: user.email,
+        });
       })
       .catch((err) => {
         if (err.name === 'ValidationError') {
@@ -64,7 +50,7 @@ const login = (req, res, next) => {
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
-          sameSite: 'none',
+          sameSite: 'None',
           secure: true,
         })
         .send({ message: 'Авторизация успешна' });
@@ -76,8 +62,8 @@ const signout = (req, res) => {
   res
     .clearCookie('jwt', {
       httpOnly: true,
-      sameSite: 'none',
       secure: true,
+      sameSite: 'None',
     })
     .send({ message: 'Успешный выход' });
 };
@@ -104,7 +90,7 @@ const updateUserProfile = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     { name, email },
-    { runValidators: true, new: true }
+    { runValidators: true, new: true },
   )
     .then((newUser) => {
       res.send(newUser);
