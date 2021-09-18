@@ -56,7 +56,7 @@ const deleteMovie = (req, res, next) => {
     .orFail(new NotFoundError('Фильм с таким id не найден'))
     .then((movie) => {
       if (movie.owner.toString() !== owner.toString()) {
-        throw new ForbiddenError(`Нет прав для удаления ${movie.owner.toString()} и ${owner.toString()}`);
+        throw new ForbiddenError(`Нет прав для удаления`);
       }
       Movie.deleteOne({ movieId: id })
         .then(() => {
