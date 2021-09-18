@@ -55,7 +55,7 @@ const deleteMovie = (req, res, next) => {
     .select('+owner')
     .orFail(new NotFoundError('Фильм с таким id не найден'))
     .then((movie) => {
-      if (movie.owner.equals(owner)) {
+      if (movie.owner.toSring() === owner.toString()) {
         return movie.remove()
           .then(() => {
             res.send({ message: 'Фильм удален' });
