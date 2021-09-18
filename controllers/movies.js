@@ -50,7 +50,8 @@ const createMovie = (req, res, next) => {
 
 const deleteMovie = (req, res, next) => {
   const owner = req.user._id;
-  Movie.findOne({ moveId: req.params.movieId })
+  const id = req.params.movieId;
+  Movie.findOne({ id })
     .select('+owner')
     .orFail(new NotFoundError('Фильм с таким id не найден'))
     .then((movie) => {
