@@ -38,7 +38,7 @@ const createMovie = (req, res, next) => {
     thumbnail,
     movieId,
   })
-    .then((movie) => res.send({ movie }))
+    .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы невалидные данные'));
