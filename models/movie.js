@@ -12,7 +12,7 @@ const movieSchema = new mongoose.Schema({
   director: {
     type: String,
     minlength: 2,
-    maxlength: 30,
+    maxlength: 100,
     required: true,
   },
   duration: {
