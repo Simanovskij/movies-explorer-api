@@ -22,6 +22,7 @@ const createUser = (req, res, next) => {
           name: user.name,
           email: user.email,
           id: user.id,
+          liked: user.liked,
         });
       })
       .catch((err) => {
