@@ -44,14 +44,14 @@ const login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         {
           expiresIn: '7d',
-        }
+        },
       );
       res
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
           sameSite: 'None',
-          //secure: true,
+          secure: true,
         })
         .send({ message: 'Авторизация успешна' });
     })
@@ -62,7 +62,7 @@ const signout = (req, res) => {
   res
     .clearCookie('jwt', {
       httpOnly: true,
-      //secure: true,
+      secure: true,
       sameSite: 'None',
     })
     .send({ message: 'Успешный выход' });
@@ -90,7 +90,7 @@ const updateUserProfile = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     { name, email },
-    { runValidators: true, new: true }
+    { runValidators: true, new: true },
   )
     .then((newUser) => {
       res.send(newUser);
