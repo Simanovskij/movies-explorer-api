@@ -63,19 +63,21 @@ const movieSchema = new mongoose.Schema({
   },
   nameRU: {
     type: String,
-    validate: {
-      validator(data) {
-        return /^[?!:&,.а-яА-ЯёЁa-zA-Z0-9\s]+$/.test(data);
-      },
-    },
+    // validate: {
+    //   validator(data) {
+    //     return /^[?!:&,.а-яА-ЯёЁa-zA-Z0-9\s]+$/.test(data);
+    //   },
+    // },
+    required: true,
   },
   nameEN: {
     type: String,
-    validate: {
-      validator(data) {
-        return /^[?!:&,.a-zA-Z0-9\s]+$/.test(data);
-      },
-    },
+    // validate: {
+    //   validator(data) {
+    //     return /^[?!:&,.a-zA-Z0-9\s]+$/.test(data);
+    //   },
+    // },
+    required: true,
   },
 });
 
