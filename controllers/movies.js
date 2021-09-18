@@ -5,7 +5,7 @@ const ForbiddenError = require('../errors/forbidden-err');
 
 const getMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
-    .then((movies) => res.send({ movies }))
+    .then((movies) => res.send(movies))
     .catch((err) => next(err));
 };
 
@@ -55,9 +55,10 @@ const deleteMovie = (req, res, next) => {
     .orFail(new NotFoundError('Фильм с таким id не найден'))
     .then((movie) => {
       if (movie.owner.equals(owner)) {
-        return movie.remove().then(() => {
-          res.send({ message: 'Фильм удален' });
-        });
+        return movie.remove()
+          .then(() => {
+            res.send({ message: 'Фильм удален' });
+          });
       }
       throw new ForbiddenError('Нет прав для удаления');
     })
