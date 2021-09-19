@@ -54,13 +54,13 @@ const deleteMovie = (req, res, next) => {
     .select('+owner')
     .orFail(new NotFoundError('Фильм с таким id не найден'))
     .then((movie) => {
-      if (movie.owner.toString() !== owner.toString()) {
-        throw new ForbiddenError('Нет прав для удаления');
+      if (movie.owner.equals(owner)) {
+        return movie.remove()
+          .then(() => {
+            res.send({ message: 'Фильм удален' });
+          });
       }
-      Movie.deleteOne({ movieId: id })
-        .then(() => {
-          res.send({ message: 'Фильм удален' });
-        });
+      throw new ForbiddenError('Нет прав для удаления');
     })
     .catch((err) => {
       if (err.name === 'CastError') {
