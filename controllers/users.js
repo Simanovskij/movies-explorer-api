@@ -89,7 +89,7 @@ const updateUserProfile = (req, res, next) => {
   const { name, email } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { name, email },
+    { $set: name, email },
     { new: true },
   )
     .then((newUser) => {
