@@ -35,7 +35,7 @@ const moviesValidate = celebrate({
 
 const updateUserValidate = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().min(2).max(25),
     email: Joi.string().email(),
   }),
 });
