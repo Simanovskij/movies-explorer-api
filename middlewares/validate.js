@@ -1,6 +1,7 @@
 const { celebrate, Joi } = require('celebrate');
 
 const regex = /^https?:\/\/(www\.)?([\da-z-.])+\.([a-z]{2,6})([\da-zA-Z-._~:?#[\]@!$&'()*+,;=/])*\/?#?$/;
+const email = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
 const signupValidate = celebrate({
   body: Joi.object().keys({
@@ -12,7 +13,7 @@ const signupValidate = celebrate({
 
 const signinValidate = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().email().required(),
+    email: Joi.string().required().pattern(email),
     password: Joi.string().min(8).required(),
   }),
 });
@@ -36,7 +37,7 @@ const moviesValidate = celebrate({
 const updateUserValidate = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    email: Joi.string().required().email(),
+    email: Joi.string().required().pattern(email),
   }),
 });
 

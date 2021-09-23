@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const bcrypt = require('bcryptjs');
 
-const validator = require('validator');
+const validateEmail = function (email) {
+  const re = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+  return re.test(email);
+};
 
 const AuthenticationError = require('../errors/auth-err');
 
@@ -17,11 +20,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    validate: {
-      validator(data) {
-        return validator.isEmail(data);
-      },
-    },
+    validate: [validateEmail],
+    match: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
   },
   password: {
     type: String,
