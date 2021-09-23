@@ -90,7 +90,7 @@ const updateUserProfile = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     { name, email },
-    { runValidators: true, new: true },
+    { new: true, runValidators: true },
   )
     .then((newUser) => {
       res.send(newUser);
