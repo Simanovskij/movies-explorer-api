@@ -1,7 +1,7 @@
 const { celebrate, Joi } = require('celebrate');
 
 const regex = /^https?:\/\/(www\.)?([\da-z-.])+\.([a-z]{2,6})([\da-zA-Z-._~:?#[\]@!$&'()*+,;=/])*\/?#?$/;
-const email = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,6}$/;
+const email = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,6}$/;
 
 const signupValidate = celebrate({
   body: Joi.object().keys({
