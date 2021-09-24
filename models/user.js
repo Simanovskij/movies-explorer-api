@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const validateEmail = function (email) {
-  const re = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+  const re = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,6}$/;
   return re.test(email);
 };
 
@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     validate: [validateEmail],
-    match: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
+    match: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,6}$/,
   },
   password: {
     type: String,
